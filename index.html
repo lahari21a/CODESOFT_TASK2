@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Simple Calculator | Basic Arithmetic & Prompt Tool</title>
+  <meta name="description" content="A simple, fast, and sleek interactive web calculator supporting prompt-driven input calculations and visual keypad mode with history logs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-glow bg-glow-1"></div>
+  <div class="background-glow bg-glow-2"></div>
+
+  <main class="app-container">
+    <header class="app-header">
+      <div class="logo-group">
+        <span class="logo-icon">🧮</span>
+        <div>
+          <h1>Simple Calculator</h1>
+          <p class="subtitle">Basic & Advanced Arithmetic Suite</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mode Selector Tabs -->
+    <nav class="mode-tabs" role="tablist">
+      <button id="tab-prompt-mode" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-prompt">
+        <span class="tab-icon">💬</span> Guided Prompt Mode
+      </button>
+      <button id="tab-keypad-mode" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-keypad">
+        <span class="tab-icon">⌨️</span> Keypad Mode
+      </button>
+    </nav>
+
+    <div class="content-grid">
+      <!-- MAIN CALCULATOR PANELS -->
+      <section class="calculator-card glass-panel">
+        
+        <!-- PANEL 1: GUIDED PROMPT MODE -->
+        <div id="panel-prompt" class="tab-panel active" role="tabpanel" aria-labelledby="tab-prompt-mode">
+          <form id="calculator-form" onsubmit="return false;">
+            <div class="input-group">
+              <label for="num1-input">First Number</label>
+              <div class="input-wrapper">
+                <span class="input-icon">1️⃣</span>
+                <input type="number" step="any" id="num1-input" placeholder="e.g. 15 or 3.14" required autocomplete="off">
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="op-select">Select Operation Choice</label>
+              <div class="input-wrapper">
+                <span class="input-icon">⚙️</span>
+                <select id="op-select" required>
+                  <option value="add">Addition (+)</option>
+                  <option value="subtract">Subtraction (-)</option>
+                  <option value="multiply">Multiplication (×)</option>
+                  <option value="divide">Division (÷)</option>
+                  <option value="modulus">Modulus / Remainder (%)</option>
+                  <option value="power">Exponentiation / Power (^)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="num2-input">Second Number</label>
+              <div class="input-wrapper">
+                <span class="input-icon">2️⃣</span>
+                <input type="number" step="any" id="num2-input" placeholder="e.g. 5 or 2" required autocomplete="off">
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button type="submit" id="btn-calculate-prompt" class="btn btn-primary">
+                <span>Calculate Result</span>
+                <span class="btn-arrow">➔</span>
+              </button>
+              <button type="button" id="btn-reset-prompt" class="btn btn-secondary">
+                Reset
+              </button>
+            </div>
+          </form>
+
+          <!-- Prompt Result Card -->
+          <div id="prompt-result-box" class="result-box hidden">
+            <div class="result-header">
+              <span class="result-tag">Calculation Result</span>
+              <button id="btn-copy-result" class="copy-btn" title="Copy Result">📋 Copy</button>
+            </div>
+            <div id="prompt-expression" class="result-expression">15 + 5 =</div>
+            <div id="prompt-value" class="result-value">20</div>
+            <div id="prompt-breakdown" class="result-breakdown">Step: 15 added to 5 equals 20.</div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: KEYPAD MODE -->
+        <div id="panel-keypad" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-keypad-mode">
+          <div class="display-screen">
+            <div id="keypad-history" class="screen-history"></div>
+            <div id="keypad-current" class="screen-current">0</div>
+          </div>
+
+          <div class="keypad-grid">
+            <button class="key key-func" data-action="clear">AC</button>
+            <button class="key key-func" data-action="delete">DEL</button>
+            <button class="key key-func" data-action="percent">%</button>
+            <button class="key key-op" data-op="/">÷</button>
+
+            <button class="key key-num" data-val="7">7</button>
+            <button class="key key-num" data-val="8">8</button>
+            <button class="key key-num" data-val="9">9</button>
+            <button class="key key-op" data-op="*">×</button>
+
+            <button class="key key-num" data-val="4">4</button>
+            <button class="key key-num" data-val="5">5</button>
+            <button class="key key-num" data-val="6">6</button>
+            <button class="key key-op" data-op="-">-</button>
+
+            <button class="key key-num" data-val="1">1</button>
+            <button class="key key-num" data-val="2">2</button>
+            <button class="key key-num" data-val="3">3</button>
+            <button class="key key-op" data-op="+">+</button>
+
+            <button class="key key-num key-zero" data-val="0">0</button>
+            <button class="key key-num" data-val=".">.</button>
+            <button class="key key-op" data-op="^">^</button>
+            <button class="key key-equals" data-action="calculate">=</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SIDEBAR: HISTORY & QUICK HELP -->
+      <aside class="sidebar-card glass-panel">
+        <div class="sidebar-header">
+          <h3>🕒 History Log</h3>
+          <button id="btn-clear-history" class="text-btn">Clear</button>
+        </div>
+        
+        <div id="history-list" class="history-list">
+          <div class="empty-history">No calculations performed yet.</div>
+        </div>
+
+        <div class="quick-tips">
+          <h4>💡 Features & Operations</h4>
+          <ul>
+            <li><strong>+ Addition:</strong> Combine two numbers</li>
+            <li><strong>- Subtraction:</strong> Find difference</li>
+            <li><strong>× Multiplication:</strong> Repeated addition</li>
+            <li><strong>÷ Division:</strong> Split into equal parts</li>
+            <li><strong>% Modulus:</strong> Find division remainder</li>
+            <li><strong>^ Exponent:</strong> Raise to power</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>Simple Calculator Suite &bull; HTML, CSS, JavaScript & Python CLI</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
